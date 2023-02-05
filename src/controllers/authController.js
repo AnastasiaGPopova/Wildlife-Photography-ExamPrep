@@ -10,46 +10,47 @@ exports.registerPage = (req,res) => {
 }
 
 exports.postRegisterUser = async (req, res) => {
-    const {email, username, password, rePassword} = req.body
-    const existingUserName = await authService.getUserByUsername(username)
+    const {firstName, lastName, email, password, rePassword} = req.body
+
     const existingUserEmail = await authService.getUserByEmail(email)
     try{
         if(password !== rePassword) {
             throw new Error ("Passwords do not match!")
         }
 
-        if(email == "" || username == "" || password == "" || rePassword == ""){
+        if(firstName == "" || lastName== "" || email == "" ||  password == "" || rePassword == ""){
             throw new Error ("All fields are requiered!")
         }
 
-        if(existingUserName || existingUserEmail){
-            throw new Error("Username or Email are already taken!")
+        if(existingUserEmail){
+            throw new Error("Email is already taken!")
         }
 
-        const token = await authService.register(email, username, password)
+        const token = await authService.register(firstName, lastName, email, password)
         res.cookie('auth', token, {httpOnly: true})
         res.redirect('/')
 
     } catch(error){
+        console.log(error)
         const errors = parser.parseError(error)
-        res.render('auth/register', {errors, body: req.body.username})
+        res.render('auth/register', {errors, body: req.body.email})
 
     }
 
 }
 
 exports.postLoginUser = async (req, res) => {
-    const {username, password} = req.body
+    const {email, password} = req.body
 
-    const existingUser = await authService.getUserByUsername(username)
+    const existingUser = await authService.getUserByEmail(email)
 
     try{
-        if(username =="" || password ==""){
+        if(email =="" || password ==""){
             throw new Error ("All fields are requiered!")
         }
 
         if(!existingUser){ //we call the modell method
-            throw new Error ("Invalid username or password!")
+            throw new Error ("Invalid email or password!")
          }
 
         const token = await authService.login(existingUser, password)
@@ -58,7 +59,7 @@ exports.postLoginUser = async (req, res) => {
    
     } catch(error){
         const errors = parser.parseError(error)
-        res.render('auth/login', {errors, body: req.body.username})
+        res.render('auth/login', {errors, body: req.body.email})
     }
 }
 

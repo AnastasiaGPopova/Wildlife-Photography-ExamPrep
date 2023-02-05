@@ -10,7 +10,7 @@ exports.authentication = async (req, res, next) => {
         const decodedToken = await jtw.verify(token, config.SECRET)
         req.user = decodedToken
         req.authenticated = true
-        res.locals.username = decodedToken.username
+        res.locals.email = decodedToken.email
         res.locals.isAuthenticated = true
 
         } catch(err){
