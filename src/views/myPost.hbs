@@ -6,16 +6,14 @@
                     <!-- If there are own posts for wildlife in the database display each of them -->
                     {{#each allMyPosts}}
                     {{> myPost}}
-                    {{/each}}
-
-                    <!-- If there are still no own posts for wildlife in the database display: -->
-                    <!--<div class="no-posts">
+                    {{else}}
+                    <div class="no-posts">
                         <div class="no-posts-img">
-                            <!/-- Do not forget to change the path to the image, and remove this comment  --/>
-                            <img src="./static/img/bear.jpg" alt="image_nature_3">
+                            <img src="/img/bear.jpg" alt="image_nature_3">
                         </div>
                         <p class="no-offer">There are no own posts yet...</p>
-                    </div>-->
+                    </div>
+                    {{/each}}
                 </div>
             </section>
 

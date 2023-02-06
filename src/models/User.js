@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        match: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+        match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
         minLength: [3, 'Email should be at least 3 charecters!']
     },
     password : {

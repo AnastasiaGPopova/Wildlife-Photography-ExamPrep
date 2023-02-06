@@ -31,10 +31,8 @@ exports.postRegisterUser = async (req, res) => {
         res.redirect('/')
 
     } catch(error){
-        console.log(error)
         const errors = parser.parseError(error)
-        res.render('auth/register', {errors, body: req.body.email})
-
+        res.render('auth/register', {errors})
     }
 
 }

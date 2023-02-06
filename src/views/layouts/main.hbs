@@ -15,7 +15,9 @@
     <div id="box">
          {{#if errors}}
         <div class="error-container">
+            {{#each errors}}
             <p>{{this}}</p>
+            {{/each}}
         </div>
         {{/if}}
 
