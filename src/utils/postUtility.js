@@ -1,8 +1,8 @@
 const Post = require('../models/Post.js')
-exports.isHotelOwner = (user, post) => {
+exports.isPostOwner = (user, post) => {
     let isOwner = false
     if(user){
-        if(user._id == hotel.owner._id){
+        if(user._id == post.autor._id){
             isOwner = true
         }
     }
@@ -10,13 +10,14 @@ exports.isHotelOwner = (user, post) => {
 }
 
 
-exports.isRated = async (userId, postId) => {
-    let isRated = false
-    const post = await Post.findById(postId)
-    const reated = hotel.bookedByUsers.find(x=> x == userId )
 
-    if(reated){
-        isRated = true
+exports.isVoted = async (userId, postId) => {
+    let isVoted = false
+    const post = await Post.findById(postId)
+    const rated = post.votesOfUsers.find(x=> x == userId )
+
+    if(rated){
+        isVoted = true
     }
-    return isRated
+    return isVoted
 }

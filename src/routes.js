@@ -32,6 +32,14 @@ router.post('/post/create', isAuthenticated, postController.postCreatedPost)
 //Details Page
 router.get('/post/:postId/details', isAuthenticated, postController.getDetails)
 
+//Votes
+router.get('/post/:postId/voteUp', isAuthenticated, postController.voteUp)
+router.get('/post/:postId/voteDown', isAuthenticated, postController.voteDown)
+
+//Edit page
+router.get('/post/:postId/edit', isAuthenticated, postController.getEditedPage)
+router.post('/post/:postId/edit', isAuthenticated, postController.postEditedPost)
+
 
 // //Book
 // router.get('/hotel/:hotelId/book', isAuthenticated, hotelController.getBooked)
@@ -49,7 +57,7 @@ router.get('/post/:postId/details', isAuthenticated, postController.getDetails)
 
 
 router.get('/logout', authController.logout)
-//router.get('/404', homeController.getErrorPage404)
+router.get('/404', homeController.getErrorPage404)
 
 
 

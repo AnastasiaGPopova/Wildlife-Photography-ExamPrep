@@ -26,6 +26,6 @@ exports.getAllPostsPage = async (req, res) => {
 //     res.render('about')
 // }
 
-// exports.getErrorPage404 = (req, res) => {
-//     res.render('404')
-// }
+exports.getErrorPage404 = (req, res) => {
+    res.render('404')
+}
