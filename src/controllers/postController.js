@@ -59,32 +59,47 @@ exports.getDetails = async (req, res) => {
 
 exports.voteUp = async (req,res) =>{
     const currentPost = await postService.getOnePost(req.params.postId)
+    const isOwner = postlUtility.isPostOwner(req.user, currentPost)
+
+    if(isOwner){
+        res.redirect('/')
+    } else {
     currentPost.votesOfUsers.push(req.user._id)
     currentPost.raiting++
     await currentPost.save()
     res.redirect(`/post/${req.params.postId}/details`)
+    }
 
 }
 
 
 exports.voteDown = async (req,res) =>{
     const currentPost = await postService.getOnePost(req.params.postId)
+    const isOwner = postlUtility.isPostOwner(req.user, currentPost)
+
+    if(isOwner){
+        res.redirect('/')
+    } else {
     currentPost.votesOfUsers.push(req.user._id)
     currentPost.raiting--
     await currentPost.save()
 
     res.redirect(`/post/${req.params.postId}/details`)
+    }
 
 }
 
 exports.getEditedPage = async (req,res) => {
-    const currentPost = await postService.getOnePost(req.params.postId).lean()
-    if(!postlUtility.isPostOwner(req.user, currentPost)){
-        res.redirect('/404')
+    const currentPost = await postService.getOnePost(req.params.postId).populate('autor').lean()
+    const isOwner = postlUtility.isPostOwner(req.user, currentPost)
 
-    res.render('edit', {currentPost})
+    if(!isOwner){
+        res.redirect('/')
+    } else {
+        res.render('edit', {currentPost})
+    }
 }
-}
+
 
 
 exports.postEditedPost = async (req,res) => {
@@ -107,15 +122,15 @@ exports.postEditedPost = async (req,res) => {
 
 
 exports.getDeletePost= async (req, res) => {
-    const post = await postService.getOnePost(req.params.postId).lean()
+    const post = await postService.getOnePost(req.params.postId).populate('autor').lean()
+    const isOwner = postlUtility.isPostOwner(req.user, post)
 
-    if(!postlUtility.isPostOwner(req.user, post)){
-        res.redirect('/404')
-    }
+    if(!isOwner){
+        res.redirect('/')
+    } else {
    const test = await postService.deletePost(req.params.postId)
-
-
    res.redirect('/')
+    }
 }
 
 exports.getAllMyPosts = async (req,res) => {
