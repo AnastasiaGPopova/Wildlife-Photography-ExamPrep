@@ -25,35 +25,23 @@ router.post('/register', authController.postRegisterUser)
 router.post('/login', authController.postLoginUser)
 
 
-//post creation
+// //post creation
 router.get('/post/create', isAuthenticated, postController.getPostCreationPage )
 router.post('/post/create', isAuthenticated, postController.postCreatedPost)
 
-//Details Page
+// //Details Page
 router.get('/post/:postId/details', isAuthenticated, postController.getDetails)
 
-//Votes
+// //Votes
 router.get('/post/:postId/voteUp', isAuthenticated, postController.voteUp)
 router.get('/post/:postId/voteDown', isAuthenticated, postController.voteDown)
 
-//Edit page
+// //Edit page
 router.get('/post/:postId/edit', isAuthenticated, postController.getEditedPage)
 router.post('/post/:postId/edit', isAuthenticated, postController.postEditedPost)
 
-
-// //Book
-// router.get('/hotel/:hotelId/book', isAuthenticated, hotelController.getBooked)
-
-// ///Profile page
-// router.get('/profile', isAuthenticated, homeController.getProfilePage)
-
-
-// // //Edit Page
-// router.get('/hotel/:hotelId/edit', isAuthenticated,  hotelController.getEditHotelPage)
-// router.post('/hotel/:hotelId/edit', isAuthenticated, hotelController.postEditedHotel)
-
-// // //Delete Hotel
-// router.get('/hotel/:hotelId/delete', hotelController.getDeleteHotel)
+//Delete post
+router.get('/post/:postId/delete', isAuthenticated, postController.getDeletePost)
 
 
 router.get('/logout', authController.logout)

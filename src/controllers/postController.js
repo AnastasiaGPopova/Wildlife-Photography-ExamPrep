@@ -79,21 +79,23 @@ exports.voteDown = async (req,res) =>{
 
 exports.getEditedPage = async (req,res) => {
     const currentPost = await postService.getOnePost(req.params.postId).lean()
+    if(!postlUtility.isPostOwner(req.user, currentPost)){
+        res.redirect('/404')
 
     res.render('edit', {currentPost})
+}
 }
 
 
 exports.postEditedPost = async (req,res) => {
     const {title, keyword, location, creationDate, imageUrl, description} = req.body
+    
 
     try{
         if(!title || !keyword || !location || !creationDate || !imageUrl || !description){
             throw new Error ("All fields are requiered!")
         }
         const updatedPost = await postService.update(req.params.postId, {title, keyword, location, creationDate, imageUrl, description})//encoded body-to, which we receive, will create a new cube
-
-        console.log(updatedPost)
 
         res.redirect(`/post/${req.params.postId}/details`)
 
@@ -104,75 +106,15 @@ exports.postEditedPost = async (req,res) => {
 }
 
 
-// exports.getBooked = async (req, res) => {
-//     const currentHotel = await hotelService.getOneHotelByID(req.params.hotelId)
-//     currentHotel.bookedByUsers.push(req.user._id)
-//     currentHotel.freeRooms--
+exports.getDeletePost= async (req, res) => {
+    const post = await postService.getOnePost(req.params.postId).lean()
 
-//     await currentHotel.save()
-
-//      res.redirect(`/hotel/${req.params.hotelId}/details`)
-
-// }
-
-// exports.getEditHotelPage = async (req, res) => {
+    if(!postlUtility.isPostOwner(req.user, post)){
+        res.redirect('/404')
+    }
+   const test = await postService.deletePost(req.params.postId)
 
 
-//     try{
-//         const hotel = await hotelService.getOneHotelByID(req.params.hotelId).lean()
-
-//         //if it owner
-//         if(!hotelUtility.isHotelOwner(req.user, hotel)){
-//             res.redirect('/')
-//         }
-        
-//         res.render('edit', {hotel})
-
-//     } catch(error){
-//         const errors = parser.parseError(error)
-//         res.render('create', {errors, body: req.body.username})
-//     }
-
-// }
-
-
-// exports.postEditedHotel = async (req,res) => {
-
-//     const name = req.body.hotel
-//     const city = req.body.city
-//     const freeRooms = req.body["free-rooms"]
-//     const imageUrl = req.body.imgUrl
-
-//     try{
-//         if(!name || !city || !freeRooms || !imageUrl){
-//             throw new Error ("All fields are requiered!")
-//         }
-//         const updatedHotel = await hotelService.update(req.params.hotelId, {name, city, imageUrl, freeRooms})
-
-//         //redirect
-//         res.redirect(`/hotel/${req.params.hotelId}/details`)
-
-//     } catch(error){
-//         const errors = parser.parseError(error)
-//         res.render('create', {errors, body: req.body.username})
-//     }
-
-
-
-// }
-
-
-
-// exports.getDeleteHotel = async (req, res) => {
-//     const hotel = await hotelService.getOneHotelByID(req.params.hotelId)
-
-//     if(!hotelUtility.isHotelOwner(req.user, hotel)){
-//         res.redirect('/')
-//     }
-//    const test = await hotelService.deleteHotel(req.params.hotelId)
-//    console.log(test)
-
-
-//    res.redirect('/')
-// }
+   res.redirect('/')
+}
 
