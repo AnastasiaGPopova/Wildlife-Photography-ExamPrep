@@ -43,6 +43,9 @@ router.post('/post/:postId/edit', isAuthenticated, postController.postEditedPost
 //Delete post
 router.get('/post/:postId/delete', isAuthenticated, postController.getDeletePost)
 
+//Myposts
+router.get('/myPosts', isAuthenticated, postController.getAllMyPosts)
+
 
 router.get('/logout', authController.logout)
 router.get('/404', homeController.getErrorPage404)

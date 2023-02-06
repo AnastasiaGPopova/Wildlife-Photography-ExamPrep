@@ -118,3 +118,10 @@ exports.getDeletePost= async (req, res) => {
    res.redirect('/')
 }
 
+exports.getAllMyPosts = async (req,res) => {
+    const allPosts = await postService.getAllPosts().populate('autor').lean()
+    const allMyPosts = allPosts.filter(x => x.autor._id == req.user._id)
+
+    
+    res.render('myPost', {allMyPosts})
+}
