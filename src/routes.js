@@ -49,7 +49,7 @@ router.get('/myPosts', isAuthenticated, postController.getAllMyPosts)
 
 router.get('/logout', authController.logout)
 router.get('/404', homeController.getErrorPage404)
-router.get('/', homeController.getErrorPage404)
+router.get('*', homeController.getErrorPage404)
 
 
 
